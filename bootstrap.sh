@@ -35,11 +35,12 @@ fi
 echo "📦 Installing git..."
 brew install git
 
+read -p "Enter your GitHub username: " github_user
+
 # 4. Setup SSH key for GitHub (if not exists)
 if [ ! -f "$HOME/.ssh/id_ed25519" ]; then
   echo "🔑 Generating SSH key..."
-  read -p "Enter your GitHub email: " github_email
-  ssh-keygen -t ed25519 -C "$github_email" -f "$HOME/.ssh/id_ed25519" -N ""
+  ssh-keygen -t ed25519 -C "$github_user" -f "$HOME/.ssh/id_ed25519" -N ""
 
   # Start ssh-agent
   eval "$(ssh-agent -s)"
@@ -60,11 +61,10 @@ else
 fi
 
 # 5. Clone private repo
-SETUP_DIR="$HOME/personal/repos/mac-setup"
+SETUP_DIR="$HOME/personal/Projects/ansible-local"
 if [ ! -d "$SETUP_DIR" ]; then
-  echo "📥 Cloning mac-setup repository..."
-  read -p "Enter your GitHub username: " gh_user
-  git clone git@github.com:${gh_user}/mac-setup.git "$SETUP_DIR"
+  echo "📥 Cloning ansible-local setup repository..."
+  git clone git@github.com:"${github_user}"/ansible-local.git "$SETUP_DIR"
 else
   echo "✅ Repository already cloned"
 fi
